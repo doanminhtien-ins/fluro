@@ -119,7 +119,22 @@ class RouteTree {
       usePath = path.substring(1);
     }
 
-    var components = usePath.split("/");
+    var questionMarkIndex = usePath.indexOf("?");
+    String pathComponent;
+    String? queriesComponent;
+
+    if (questionMarkIndex != -1) {
+      pathComponent = usePath.substring(0, questionMarkIndex);
+      queriesComponent = usePath.substring(questionMarkIndex+1);
+    } else {
+      pathComponent = usePath;
+      queriesComponent = null;
+    }
+
+    var components = pathComponent.split("/");
+    if (queriesComponent != null) {
+      components.last = components.last + '?' + queriesComponent;
+    }
 
     if (path == Navigator.defaultRouteName) {
       components = ["/"];
